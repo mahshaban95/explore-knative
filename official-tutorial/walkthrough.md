@@ -9,7 +9,7 @@ Important files will be stored in the same folder, `Official Tutorial`.
 - To setup a local environment that includes all the necessary depemdemcies (KN, Kubectl, Kind, etc), please refer to `../README.md`.
   - The local environment is installed using `nix-shell`, and it includes the quickstart plugin.
 
-- Install Knative and Kubernetes using kind by running:
+- Run the Knative quickstart plugin:
   ```bash
   kn quickstart kind
   ```
@@ -60,7 +60,7 @@ Important files will be stored in the same folder, `Official Tutorial`.
 
 - Build the function without Running it
   ```bash
-  dunc build
+  func build
   ```
 
 ## [Knative Serving](https://knative.dev/docs/getting-started/first-service/)
