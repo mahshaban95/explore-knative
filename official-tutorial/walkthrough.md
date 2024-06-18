@@ -64,3 +64,37 @@ Important files will be stored in the same folder, `Official Tutorial`.
   ```
 
 ## [Knative Serving](https://knative.dev/docs/getting-started/first-service/)
+
+Next, We will deploy a `Hello world` Knative Service that accepts the environment variable `TARGET` and prints `Hello ${TARGET}!`.
+
+- Deploy the Service
+  ```bash
+  kn service create hello \
+  --image ghcr.io/knative/helloworld-go:latest \
+  --port 8080 \
+  --env TARGET=World
+  ```
+
+- Get info about the service
+  ```bash
+  kn service describe hello
+  ```
+
+- Update the service
+  ```bash
+  kn service update hello --env TARGET=Mahmoud
+  ```
+  Note:
+  -  New pods are created for the updated version. 
+  -  Pods are terminated after some time of inactivity.
+  -  At time of inactivity the `READY` state of deployments is `0/0` indicating that there are no pods running (scale to **zero** feature). You can check all that using `kubectl`:
+      ```bash
+      kubectl get all
+      ```
+
+- Delete the created service:
+  ```bash
+  kn service delete hello 
+  ```
+
+## Autoscaling 
