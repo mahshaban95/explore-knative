@@ -92,9 +92,57 @@ Next, We will deploy a `Hello world` Knative Service that accepts the environmen
       kubectl get all
       ```
 
+
+### [Autoscaling](https://knative.dev/docs/getting-started/first-autoscale/#autoscaling) 
+
+- View a list of Knative Services by running the command:
+  ```bash
+  kn service list
+  # or
+  kubectl get ksvc
+  ```
+
+- Test your Knative Service:
+  ```bash
+  echo "Accessing URL $(kn service describe hello -o url)"
+  curl "$(kn service describe hello -o url)"
+  ```
+
+- Watch the pods and see how they scale to zero after traffic stops going to the URL:
+  ```bash
+  kubectl get pod -l serving.knative.dev/service=hello -w
+  ```
+  - We noted that before in the previous section.
+
+
+### [Traffic splitting](https://knative.dev/docs/getting-started/first-traffic-split/)
+
+- Create a new revision by updating the created service.
+  ```bash
+  kn service update hello --env TARGET=Knative
+  ```
+
+- Test that the revision is created properly.
+  ```bash
+  echo "Accessing URL $(kn service describe hello -o url)"
+  curl "$(kn service describe hello -o url)" 
+  ```
+
+- View existing revisions.
+  ```bash
+  kn revisions list
+  # or
+  kubectl get revisions
+  ```
+
+- Split the traffic between the two Revisions:
+  ```bash
+  kn service update hello \
+  --traffic hello-service-00001=50 \
+  --traffic @latest=50
+  ```
+
 - Delete the created service:
   ```bash
   kn service delete hello 
   ```
-
-## Autoscaling 
