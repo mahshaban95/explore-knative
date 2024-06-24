@@ -146,3 +146,61 @@ Next, We will deploy a `Hello world` Knative Service that accepts the environmen
   ```bash
   kn service delete hello 
   ```
+
+## [Knative Eventing](https://knative.dev/docs/getting-started/getting-started-eventing/)
+
+- Check if a Broker is installed
+  - There should be an InMemoryChannel-backed Broker installed in your Kind cluster as part of the `kn quickstart` install.
+  ```bash
+  kn broker list
+  # for more info about the broker
+  kn broker describe <broker-name>
+  # or
+  kubectl get broker <broker-name> -oyaml
+  ```
+
+### [Using a Knative Service as a source](https://knative.dev/docs/getting-started/first-source/)
+
+
+In this tutorial, you will use the [CloudEvents Player](https://github.com/ruromero/cloudevents-player) app to showcase the core concepts of Knative Eventing.
+
+- Create a CloudEvents Player service to act as your source.
+  ```bash
+  kn service create cloudevents-player \
+  --image quay.io/ruben/cloudevents-player:latest
+  ```
+  - Note that The CloudEvents Player acts as a Source for CloudEvents by intaking the name of the Broker as an environment variable, `BROKER_NAME`.
+
+- We also need to create a source binidng between the **subject** (service) and the **sink** (broker).
+  ```bash
+  kn source binding create ce-player-binding --subject "Service:serving.knative.dev/v1:<service-name>" --sink broker:<broker-name>
+  # or
+  kn source binding create ce-player-binding --subject "Service:serving.knative.dev/v1:cloudevents-player" --sink broker:example-broker
+  ```
+
+- Use the CloudEvents Player to send and receive CloudEvents.
+  - Get the URL to access the CloudEvents Player
+    ```bash
+    kn service describe cloudevents-player -o url
+    ```
+  - Open it in your browser, fill the form and send the event.
+- Right now, the event went nowhere as the Broker is simply a receptacle for events. In order for your events to be sent anywhere, you must create a Trigger which listens for your events and places them somewhere.
+
+### [Using Triggers and sinks](https://knative.dev/docs/getting-started/first-trigger/)
+
+In the previous section, we used the [CloudEvents Player](https://github.com/ruromero/cloudevents-player) as a source for events. We will use it here to receive events as well.
+
+- Create a Trigger that listens for CloudEvents from the event source and places them into the sink.
+  ```bash
+  kn trigger create cloudevents-trigger --sink cloudevents-player  --broker example-broker
+  ```
+  - You could also specify `--filter` in the `kn` command to filter which events the trigger is listening to.
+      ```bash
+      # for example
+      kn trigger create cloudevents-player-filter --sink cloudevents-player  --broker example-broker --filter type=some-type
+      ```
+
+## Clean Up
+```bash
+kind delete clusters knative
+```
