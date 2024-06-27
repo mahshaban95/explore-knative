@@ -1,5 +1,6 @@
-# I use this repo for my personal exploration of thr KNative Project
+# Overview
 
+I am using this repo to document my personal exploration of the Knative project.
 
 Knative is an exciting open-source project that provides a set of middleware components for building, deploying, and managing modern serverless workloads on Kubernetes. It's designed to give developers the tools they need to quickly build scalable and stateless applications in any language.
 
