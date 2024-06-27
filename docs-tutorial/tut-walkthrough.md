@@ -2,7 +2,7 @@
  
 In this document, I will follow the officail Knative [tutorial](https://knative.dev/docs/getting-started/).\
 I will use this space to keep all the commands I use to act as a refernce. I will also add screenshot, key findings, etc.\
-Important files will be stored in the same folder, `Official Tutorial`.
+Important files will be stored in the same folder.
 
 ## [Installl Knative with quickstart](https://knative.dev/docs/getting-started/quickstart-install/)
 
