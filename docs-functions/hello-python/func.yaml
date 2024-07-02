@@ -1,8 +1,9 @@
 specVersion: 0.35.0
 name: hello-python
 runtime: python
-registry: ""
-image: ""
+registry: registry.example.com/knative-python
+image: registry.example.com/knative-python/hello-python:latest
 created: 2024-06-27T04:36:59.650627-07:00
 build:
+  builder: pack
   pvcSize: 256Mi
